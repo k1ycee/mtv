@@ -1,29 +1,48 @@
-import 'dart:convert';
+class News {
+    String by;
+    int descendants;
+    int id;
+    List<int> kids;
+    int score;
+    int time;
+    String title;
+    String type;
+    String url;
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:mtv/models/serializers/serializers.dart';
-part 'book_model.g.dart';
+    News({
+        this.by,
+        this.descendants,
+        this.id,
+        this.kids,
+        this.score,
+        this.time,
+        this.title,
+        this.type,
+        this.url,
+    });
 
-abstract class News implements Built<News, NewsBuilder> {
+    factory News.fromJson(Map<String, dynamic> json) => News(
+        by: json["by"] == null ? null : json["by"],
+        descendants: json["descendants"] == null ? null : json["descendants"],
+        id: json["id"] == null ? null : json["id"],
+        kids: json["kids"] == null ? null : List<int>.from(json["kids"].map((x) => x)),
+        score: json["score"] == null ? null : json["score"],
+        time: json["time"] == null ? null : json["time"],
+        title: json["title"] == null ? null : json["title"],
+        type: json["type"] == null ? null : json["type"],
+        url: json["url"] == null ? null : json["url"],
+    );
 
-  static Serializer<News> get serializer => _$newsSerializer;
-    String get by;
-    int get descendants;
-    int get id;
-    List<int> get kids;
-    int get score;
-    int get time;
-    String get title;
-    String get type;
-    String get url;
-  News._();
-  factory News([void Function(NewsBuilder) updates]) = _$News;
+    Map<String, dynamic> toJson() => {
+        "by": by == null ? null : by,
+        "descendants": descendants == null ? null : descendants,
+        "id": id == null ? null : id,
+        "kids": kids == null ? null : List<dynamic>.from(kids.map((x) => x)),
+        "score": score == null ? null : score,
+        "time": time == null ? null : time,
+        "title": title == null ? null : title,
+        "type": type == null ? null : type,
+        "url": url == null ? null : url,
+    };
 }
 
-
-News parsedNews(String str){
-  final parsed = jsonDecode(str);
-  News news = standardSerializers.deserializeWith(News.serializer, parsed);
-  return news;
-}

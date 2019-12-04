@@ -4,18 +4,29 @@ import 'package:http/http.dart';
 import 'package:mtv/models/book_model.dart';
 
 
-String url = 'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty';
+
+// List<News> newsFromJson(String str) => List<News>.from(json.decode(str).map((x) => News.fromJson(x)));
+
+// String newsToJson(List<News> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 
-// Future getNews() async {
-//   final response =
-//       await get('$url');
 
-//   if (response.statusCode == 200) {
-//     // If server returns an OK response, parse the JSON.
-//     return Welcome.fromJson(json.decode(response.body));
-//   } else {
-//     // If that response was not OK, throw an error.
-//     throw Exception('Failed to load post');
-//   }
-// }
+String url = 'https://hacker-news.firebaseio.com/v0/topstories.json';
+
+
+Future getNews() async {
+  var jsonNews = await get(url);
+  var decodeNews = jsonDecode(jsonNews.body);
+  // return News.fromJson(decodeNews[0]);
+
+  for(var n in decodeNews){
+    String newUrl = 'https://hacker-news.firebaseio.com/v0/item/${n}.json';
+    dNews(newUrl);
+  }
+}
+Future dNews(newUrl) async{
+  var sNews = await get(newUrl);
+  var parse = await jsonDecode(sNews.body);
+  // print(parse);
+  return News.fromJson(parse);
+}
