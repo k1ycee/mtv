@@ -46,13 +46,13 @@ class Hmm extends StatefulWidget {
 class _HmmState extends State<Hmm> { 
 
 
- // HnewsBloc bloc;
+  HnewsBloc bloc;
 
   @override
     void initState() { 
-       NewsFlash b = NewsFlash();
-        b.getNews();
-     // bloc = BlocProvider.of<HnewsBloc>(context);
+//       NewsFlash b = NewsFlash();
+//        b.getNews();
+      bloc = BlocProvider.of<HnewsBloc>(context);
       super.initState();
       }
 
@@ -65,11 +65,11 @@ class _HmmState extends State<Hmm> {
             child: SpinKitCubeGrid(color: Colors.white, size: 80,),
           );
         }
-        if(state is Fetching){
-          return Center(
-            child: SpinKitCubeGrid(color: Colors.white, size: 80,),
-          );
-        }
+//        if(state is Fetching){
+//          return Center(
+//            child: SpinKitCubeGrid(color: Colors.white, size: 80,),
+//          );
+//        }
         if (state is NewsError){
           return Center(child: Text('Connection Timed Out'),);
         }
