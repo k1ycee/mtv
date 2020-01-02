@@ -21,7 +21,10 @@ dependencies:
     sdk: flutter
   http: 0.12.0+2
   flutter_spinkit: ^4.1.0
-  provider:
+  equatable: ^1.0.1
+  bloc:
+  flutter_bloc:
+  webview_flutter:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
