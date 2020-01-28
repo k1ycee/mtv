@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mtv/everything/bloc/bloc.dart';
 import 'package:mtv/everything/models/book_model.dart';
-import 'package:mtv/everything/repository.dart';
+//import 'package:mtv/everything/repository.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mtv/everything/services/book_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 
-TechRepo _repo = TechRepo();
+NewsFlash _repo = NewsFlash();
 void main(){
    runApp(MyApp(repo: _repo,));
   }
 
 class MyApp extends StatelessWidget {
  
-  final TechRepo repo;
+  final NewsFlash repo;
   MyApp({this.repo});
 
   @override
@@ -50,9 +50,7 @@ class _HmmState extends State<Hmm> {
 
   @override
     void initState() { 
-//       NewsFlash b = NewsFlash();
-//        b.getNews();
-      bloc = BlocProvider.of<HnewsBloc>(context);
+//      bloc = BlocProvider.of<HnewsBloc>(context);
       super.initState();
       }
 
@@ -65,11 +63,11 @@ class _HmmState extends State<Hmm> {
             child: SpinKitCubeGrid(color: Colors.white, size: 80,),
           );
         }
-//        if(state is Fetching){
-//          return Center(
-//            child: SpinKitCubeGrid(color: Colors.white, size: 80,),
-//          );
-//        }
+       if(state is Fetching){
+         return Center(
+           child: SpinKitCubeGrid(color: Colors.white, size: 80,),
+         );
+       }
         if (state is NewsError){
           return Center(child: Text('Connection Timed Out'),);
         }
@@ -77,13 +75,13 @@ class _HmmState extends State<Hmm> {
           return ListView.builder(
             itemCount: state.news.length,
             itemBuilder: (BuildContext context,int index){
-              return Tech(hNews: state.news[index],);
+            return Tech(hNews: state.news[index],);
             },
-          );
-        }
-        return null;
-      },      
-    );
+      );
+       }
+       return null;
+      }   
+     );
   }
 }
 
