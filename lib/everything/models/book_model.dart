@@ -1,6 +1,21 @@
 import 'package:equatable/equatable.dart';
 
-class HNews extends Equatable{
+
+class Habs{
+  List<HNews> news;
+  Habs({
+        this.news,
+    });
+
+    factory Habs.fromJson(Map<String, dynamic> json) => Habs(
+        news: List<HNews>.from(json["articles"].map((x) => HNews.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "news": List<dynamic>.from(news.map((x) => x.toJson())),
+    };
+}
+class HNews {
     final String by;
     final int descendants;
     final int id;
@@ -11,7 +26,7 @@ class HNews extends Equatable{
     final String type;
     final String url;
 
-   const HNews({
+   HNews({
         this.by,
         this.descendants,
         this.id,
@@ -23,8 +38,6 @@ class HNews extends Equatable{
         this.url,
     });
 
-    @override
-    List<Object> get props => [by,descendants,id,kids,score,time,title,type,url];
 
     factory HNews.fromJson(Map<String, dynamic> json) => HNews(
         by: json["by"] == null ? null : json["by"],

@@ -1,117 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mtv/everything/bloc/bloc.dart';
 import 'package:mtv/everything/models/book_model.dart';
-//import 'package:mtv/everything/repository.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mtv/everything/services/book_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+void main() => runApp(Maybe());
 
 
-NewsFlash _repo = NewsFlash();
-void main(){
-   runApp(MyApp(repo: _repo,));
-  }
+class Maybe extends StatefulWidget {
+  @override
+  _MaybeState createState() => _MaybeState();
+}
 
-class MyApp extends StatelessWidget {
+class _MaybeState extends State<Maybe> {
+  Future<Habs> news;
  
-  final NewsFlash repo;
-  MyApp({this.repo});
+  @override 
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp(   
       debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        home: Scaffold(
-          backgroundColor: Colors.black,
-          appBar: AppBar(
-            title: Text('TechCrunch', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300)),centerTitle: true, elevation: 0,backgroundColor: Colors.black,
-          ),
-          body: BlocProvider(
-            create: (context) => HnewsBloc(techRepo: repo)..add(Fetch()),
-            child: Hmm(),
-          ),
-        )
-    );
-  }
-}
-
-
-class Hmm extends StatefulWidget {
-  @override
-  _HmmState createState() => _HmmState();
-}
-
-class _HmmState extends State<Hmm> { 
-
-
-  HnewsBloc bloc;
-
-  @override
-    void initState() { 
-//      bloc = BlocProvider.of<HnewsBloc>(context);
-      super.initState();
-      }
-
- @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HnewsBloc,HnewsState>(
-      builder: (context,state){
-        if (state is InitialHnewsState){
-          return Center(
-            child: SpinKitCubeGrid(color: Colors.white, size: 80,),
-          );
-        }
-       if(state is Fetching){
-         return Center(
-           child: SpinKitCubeGrid(color: Colors.white, size: 80,),
-         );
-       }
-        if (state is NewsError){
-          return Center(child: Text('Connection Timed Out'),);
-        }
-        if (state is NewsLoaded){
-          return ListView.builder(
-            itemCount: state.news.length,
-            itemBuilder: (BuildContext context,int index){
-            return Tech(hNews: state.news[index],);
-            },
-      );
-       }
-       return null;
-      }   
-     );
-  }
-}
-
-class Tech extends StatelessWidget {
-  final HNews hNews;
-  Tech({this.hNews});
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-          title : Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ListTile(
-        title: Text(hNews.title,style: TextStyle(fontSize: 28, fontWeight: FontWeight.w300,color: Colors.white),),
-        subtitle: Text(hNews.by,style: TextStyle(fontSize: 20, fontWeight: FontWeight.w100,color: Colors.white)),
-      ),
-     ),
-     children: <Widget>[
-       Padding(
-         padding: EdgeInsets.all(10.0),
-         child: Column(
-           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      theme: ThemeData.dark(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('TechCrunch', style:TextStyle(color: Colors.white,fontWeight:FontWeight.w300,fontSize:29)),
+          centerTitle: true,
+        ),
+        body: Container(
+          child: FutureBuilder<Habs>(
+            future: news,
+            builder: (context, snapshot){
+              if (snapshot.hasData){
+                return ListView.builder(
+                  itemCount: snapshot.data.news.length,
+                  itemBuilder: (context,index){
+                    return Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(
+                        children: <Widget>[
+                          ExpansionTile(
+                              title: ListTile(
+                              contentPadding: EdgeInsets.all(8),
+                              title: Text(snapshot.data.news[index].title),
+                              subtitle: Text(snapshot.data.news[index].by),
+                            ),
+                            children: <Widget>[
+                                     Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
            children: <Widget>[
              IconButton(
                icon: Icon(Icons.launch,color: Colors.white,),
                onPressed: () async{
                  Navigator.push(context, MaterialPageRoute(
                    builder: (context) => Scaffold(
-                     appBar: AppBar(title: Text(hNews.title,style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w300),),centerTitle: true,backgroundColor: Colors.black,elevation:0,),
+                     appBar: AppBar(title: Text(snapshot.data.news[index].title,style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w300),),centerTitle: true,backgroundColor: Colors.black,elevation:0,),
                      body: WebView(
-                       initialUrl: hNews.url,
+                       initialUrl: snapshot.data.news[index].url,
                        javascriptMode: JavascriptMode.unrestricted,
                      ),
                    )
@@ -121,7 +71,19 @@ class Tech extends StatelessWidget {
            ],
          ),
        )
-     ],
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+              return Container();
+            }
+          ),
+        ),
+      ),
     );
   }
 }
