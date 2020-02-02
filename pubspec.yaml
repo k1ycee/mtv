@@ -21,9 +21,11 @@ dependencies:
     sdk: flutter
   http: 0.12.0+2
   flutter_spinkit: ^4.1.0
-  source_gen: 0.9.4+6
-  built_collection:
-  built_value:
+  equatable: ^1.0.1
+  bloc:
+  flutter_bloc:
+  webview_flutter:
+  rxdart:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -31,8 +33,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:
-  built_value_generator:
+ 
 
 
 # For information on the generic Dart part of this file, see the

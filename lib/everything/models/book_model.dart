@@ -1,15 +1,32 @@
-class News {
-    String by;
-    int descendants;
-    int id;
-    List<int> kids;
-    int score;
-    int time;
-    String title;
-    String type;
-    String url;
+import 'package:equatable/equatable.dart';
 
-    News({
+
+class Habs{
+  List<HNews> news;
+  Habs({
+        this.news,
+    });
+
+    factory Habs.fromJson(Map<String, dynamic> json) => Habs(
+        news: List<HNews>.from(json["articles"].map((x) => HNews.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "news": List<dynamic>.from(news.map((x) => x.toJson())),
+    };
+}
+class HNews {
+    final String by;
+    final int descendants;
+    final int id;
+    final List<int> kids;
+    final int score;
+    final int time;
+    final String title;
+    final String type;
+    final String url;
+
+   HNews({
         this.by,
         this.descendants,
         this.id,
@@ -21,7 +38,8 @@ class News {
         this.url,
     });
 
-    factory News.fromJson(Map<String, dynamic> json) => News(
+
+    factory HNews.fromJson(Map<String, dynamic> json) => HNews(
         by: json["by"] == null ? null : json["by"],
         descendants: json["descendants"] == null ? null : json["descendants"],
         id: json["id"] == null ? null : json["id"],
@@ -45,4 +63,3 @@ class News {
         "url": url == null ? null : url,
     };
 }
-
